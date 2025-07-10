@@ -1,12 +1,27 @@
 use std::io;
-use chrono;
+use std::fs::File;
+use std::io::Write;
+use chrono::Local;
 
 fn main() {
     // Print welcome message and questions
     println!("📓 Welcome to MDJournal!\n");
 
-    println!("{:?}", chrono::offset::Local::now());
+    // Get current date and format it
+    let date = Local::now();
+    let filename = date.format("%Y-%m-%d");
+
+    // Run the questions function
     journal();
+
+    // Create or open file
+    let mut file = File::create(filename.to_string())
+        .expect("Failed to create or open file");
+    // Write to file
+    file.write_all(b"Hello, Rust!")
+        .expect("Failed to write to file");
+    // Confirmation message
+    println!("Data written to file successfully!");
 }
 
 fn journal() {
@@ -32,7 +47,7 @@ fn journal() {
         // Read line
         io::stdin()
             .read_line(&mut input)
-            .expect("Failed to read line!");
+            .expect("Failed to read line");
 
         // Add answers to vector, trim to remove "/n",
         // and to_string() for correct type.
