@@ -1,7 +1,16 @@
-use std::io;
-use std::fs::File;
-use std::io::Write;
 use chrono::Local;
+use std::fs::File;
+use std::io;
+use std::io::Write;
+
+// Global questions array
+static QUESTIONS: [&str; 5] = [
+    "🌟 What was the highlight of your day?",
+    "🧗 Did you face any challenges today? How did you handle them?",
+    "📚 What is one thing you learned today?",
+    "🙏 What are you grateful for today?",
+    "🎯 What is one thing you want to improve on tomorrow?",
+];
 
 fn main() {
     // Print welcome message and questions
@@ -11,13 +20,13 @@ fn main() {
     let date = Local::now();
     let filename = date.format("%Y-%m-%d");
 
-    // Save the questions function return as variable
-    let content = journal();
-
+    // Save the journal function as variable
+    let answers = journal();
+    // Format content using function
+    let content = format(&answers);
 
     // Create or open file
-    let mut file = File::create(filename.to_string())
-        .expect("Failed to create or open file");
+    let mut file = File::create(filename.to_string()).expect("Failed to create or open file");
 
     // Combine and write to file
     let combined = content.join("\n");
@@ -25,7 +34,7 @@ fn main() {
         .expect("Failed to write to file");
 
     // Confirmation message
-    println!("Data written to file successfully!");
+    println!("\nData written to file successfully!");
 }
 
 // Function returns a Vector of strings
@@ -33,22 +42,12 @@ fn journal() -> Vec<String> {
     // Creates new string object
     let mut input = String::new();
 
-    // ADD ~ AT INPUT
-    // Create the questions
-    let questions = [
-        "🌟 What was the highlight of your day?",
-        "🧗 Did you face any challenges today? How did you handle them?",
-        "📚 What is one thing you learned today?",
-        "🙏 What are you grateful for today?",
-        "🎯 What is one thing you want to improve on tomorrow?",
-    ];
-
     // Vector of answers
     let mut answers: Vec<String> = Vec::new();
 
     // Print the questions
-    for str in questions {
-        println!("{}", str);
+    for q in QUESTIONS {
+        println!("{}", q);
 
         // Read line
         io::stdin()
@@ -61,5 +60,15 @@ fn journal() -> Vec<String> {
         input.clear();
     }
     // Return vector
-    answers
+    answers // Used later, in main()
+}
+
+// Takes answers as param, uses global QUESTIONS variable
+fn format(answers: &[String]) -> Vec<String> {
+    // Combines questions and answers using zip()
+    QUESTIONS
+        .iter()
+        .zip(answers)
+        .map(|(q, a)| format!("### {}\n{}\n", q, a))
+        .collect()
 }
