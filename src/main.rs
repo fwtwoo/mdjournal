@@ -11,30 +11,36 @@ fn main() {
     let date = Local::now();
     let filename = date.format("%Y-%m-%d");
 
-    // Run the questions function
-    journal();
+    // Save the questions function return as variable
+    let content = journal();
+
 
     // Create or open file
     let mut file = File::create(filename.to_string())
         .expect("Failed to create or open file");
-    // Write to file
-    file.write_all(b"Hello, Rust!")
+
+    // Combine and write to file
+    let combined = content.join("\n");
+    file.write_all(combined.as_bytes()) // Rust expects a byte slice
         .expect("Failed to write to file");
+
     // Confirmation message
     println!("Data written to file successfully!");
 }
 
-fn journal() {
+// Function returns a Vector of strings
+fn journal() -> Vec<String> {
     // Creates new string object
     let mut input = String::new();
 
+    // ADD ~ AT INPUT
     // Create the questions
     let questions = [
-        "1. What was the highlight of your day?",
-        "2. Did you face any challenges today? How did you handle them?",
-        "3. What is one thing you learned today?",
-        "4. What are you grateful for today?",
-        "5. What is one thing you want to improve on tomorrow?",
+        "🌟 What was the highlight of your day?",
+        "🧗 Did you face any challenges today? How did you handle them?",
+        "📚 What is one thing you learned today?",
+        "🙏 What are you grateful for today?",
+        "🎯 What is one thing you want to improve on tomorrow?",
     ];
 
     // Vector of answers
@@ -54,6 +60,6 @@ fn journal() {
         answers.push(input.trim().to_string());
         input.clear();
     }
-    // Debug print
-    println!("{:?}", answers);
+    // Return vector
+    answers
 }
