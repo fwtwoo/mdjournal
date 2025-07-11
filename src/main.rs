@@ -16,9 +16,10 @@ fn main() {
     // Print welcome message and questions
     println!("📓 Welcome to MDJournal!\n");
 
-    // Get current date and format it
+    // Get current date and format it + create title
     let date = Local::now();
-    let filename = date.format("%Y-%m-%d");
+    let filename = format!("{}.md", Local::now().format("%Y-%m-%d"));
+    let title = format!("# Journal Entry - {}\n", date.format("%Y/%m/%d"));
 
     // Save journal() return as variable
     let answers = journal();
@@ -28,8 +29,8 @@ fn main() {
     // Create or open file
     let mut file = File::create(filename.to_string()).expect("Failed to create or open file");
 
-    // Combine and write to file
-    let combined = content.join("\n");
+    // Combine and write to file - including title
+    let combined = format!("{}\n{}", title, content.join("\n"));
     file.write_all(combined.as_bytes()) // Rust expects a byte slice
         .expect("Failed to write to file");
 
