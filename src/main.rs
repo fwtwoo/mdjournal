@@ -20,10 +20,10 @@ fn main() {
     let date = Local::now();
     let filename = date.format("%Y-%m-%d");
 
-    // Save the journal function as variable
+    // Save journal() return as variable
     let answers = journal();
     // Format content using function
-    let content = format(&answers);
+    let content = format_md(&answers);
 
     // Create or open file
     let mut file = File::create(filename.to_string()).expect("Failed to create or open file");
@@ -34,7 +34,7 @@ fn main() {
         .expect("Failed to write to file");
 
     // Confirmation message
-    println!("\nData written to file successfully!");
+    println!("\n✅ Data written to file successfully!");
 }
 
 // Function returns a Vector of strings
@@ -54,7 +54,7 @@ fn journal() -> Vec<String> {
             .read_line(&mut input)
             .expect("Failed to read line");
 
-        // Add answers to vector, trim to remove "/n",
+        // Add answers to vector, trim to remove "\n",
         // and to_string() for correct type.
         answers.push(input.trim().to_string());
         input.clear();
@@ -64,7 +64,7 @@ fn journal() -> Vec<String> {
 }
 
 // Takes answers as param, uses global QUESTIONS variable
-fn format(answers: &[String]) -> Vec<String> {
+fn format_md(answers: &[String]) -> Vec<String> {
     // Combines questions and answers using zip()
     QUESTIONS
         .iter()
