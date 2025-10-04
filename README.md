@@ -1,7 +1,7 @@
 # MDJournal
 
 **MDJournal** is a simple, terminal-based Markdown journaling tool written in Rust.  
-It prompts you with daily reflective questions, formats your answers into Markdown, and saves them as dated `.md` files — perfect for personal tracking and self-reflection.
+It prompts you with daily reflective questions, formats your answers into Markdown, and saves them as dated `.md` files. This project is extremely simple, I just wanted something to work on **to learn the absolute basics of Rust**.
 
 <img width="3680" height="2488" alt="ray-so-export" src="https://github.com/user-attachments/assets/7b9137b7-dcdf-4dc1-bb0b-0f976355e037" />
 
